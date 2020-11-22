@@ -14,7 +14,7 @@ void err_sys(const char *err_m){
 
 void flush_sync(FILE *pipe, int fd){
 	fflush(pipe);
-	fsync(fd);
+	//fsync(fd);
 	return;
 }
 
@@ -44,7 +44,7 @@ void create_child(pid_t *pid1, pid_t *pid_2, int pipe1_d[2], int pipe1_u[2], int
 		}else{
 			char player_id[100];
 			sprintf(player_id, "%d\0", player1_id);
-			execl("./player", player_id, (char *)0);
+			execl("./player", "./player", player_id, (char *)0);
 		}
 
 	}
@@ -75,7 +75,7 @@ void create_child(pid_t *pid1, pid_t *pid_2, int pipe1_d[2], int pipe1_u[2], int
 		}else{
 			char player_id[100];
 			sprintf(player_id, "%d\0", player2_id);
-			execl("./player", player_id, (char *)0);
+			execl("./player", "./player", player_id, (char *)0);
 		}
 
 	}
@@ -131,8 +131,8 @@ int main(int argc, char* argv[]){
 
 			int p1_id, p2_id, p1_bid, p2_bid;
 			for(int i = 0; i < 10; i ++){
-				fscanf(pipe1_r, "%d %d\n", &p1_id, &p1_bid);
-				fscanf(pipe2_r, "%d %d\n", &p2_id, &p2_bid);
+				fscanf(pipe1_r, "%d %d", &p1_id, &p1_bid);
+				fscanf(pipe2_r, "%d %d", &p2_id, &p2_bid);
 				int w_id = (p1_bid > p2_bid) ? p1_id : p2_id;
 				for(int j = 0; j < 8; j++){
 					if(w_id == rank[j][0]){
@@ -193,14 +193,15 @@ int main(int argc, char* argv[]){
 
 			int p1_id, p2_id, p1_bid, p2_bid;
 			for(int i = 0; i < 10; i ++){
-				fscanf(pipe1_r, "%d %d\n", &p1_id, &p1_bid);
-				fscanf(pipe2_r, "%d %d\n", &p2_id, &p2_bid);
+				fscanf(pipe1_r, "%d %d", &p1_id, &p1_bid);
+				fscanf(pipe2_r, "%d %d", &p2_id, &p2_bid);
 				int w_id = (p1_bid > p2_bid) ? p1_id : p2_id;
 				int w_bid = (p1_bid > p2_bid) ? p1_bid : p2_bid;
 				printf("%d %d\n", w_id, w_bid);
 				flush_sync(stdout, STDOUT_FILENO);
 			}
 			scanf("%d %d %d %d", &player[0], &player[1], &player[2], &player[3]);
+			//printf("%d\n", player[0]);
 		}
 		fprintf(pipe1_w, "-1 -1\n");
 		fprintf(pipe2_w, "-1 -1\n");
@@ -229,8 +230,8 @@ int main(int argc, char* argv[]){
 
 			int p1_id, p2_id, p1_bid, p2_bid;
 			for(int i = 0; i < 10; i ++){
-				fscanf(pipe1_r, "%d %d\n", &p1_id, &p1_bid);
-				fscanf(pipe2_r, "%d %d\n", &p2_id, &p2_bid);
+				fscanf(pipe1_r, "%d %d", &p1_id, &p1_bid);
+				fscanf(pipe2_r, "%d %d", &p2_id, &p2_bid);
 				int w_id = (p1_bid > p2_bid) ? p1_id : p2_id;
 				int w_bid = (p1_bid > p2_bid) ? p1_bid : p2_bid;
 				printf("%d %d\n", w_id, w_bid);
